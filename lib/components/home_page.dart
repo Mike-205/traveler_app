@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_blog/widgets/app_large_text.dart';
@@ -46,6 +47,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     "Mt.Meru": "Arusha, Tanzania"
   };
 
+  void signUserOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     TabController _tabController =TabController(length: 3, vsync: this);
@@ -58,10 +63,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             padding: const EdgeInsets.only(top: 70, left: 20),
             child: Row(
               children: [
-                const Icon(
-                  Icons.menu,
-                  size: 30,
-                  color: Colors.black,
+                GestureDetector(
+                  onTap: signUserOut,
+                  child: const Icon(
+                    Icons.menu,
+                    size: 30,
+                    color: Colors.black,
+                  ),
                 ),
                 Expanded(child: Container()),
                 Container(

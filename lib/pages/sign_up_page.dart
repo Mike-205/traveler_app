@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_blog/pages/login_page.dart';
@@ -18,6 +19,72 @@ class _SignUpPageState extends State<SignUpPage> {
   final emailController = TextEditingController();
   final passwordController =TextEditingController();
 
+  // sign user up function
+  Future<void> signUserUp() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+    );
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text
+      );
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'email-already-in-use') {
+        return userAlreadyExist();
+      }  else if (e.code == 'weak-password') {
+        return weakPassword();
+      }
+    }
+    Navigator.pop(context);
+  }
+
+  void userAlreadyExist() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('User already exist', style: TextStyle(color: Colors.purple),),
+          content: const Text('The account already exists for that email.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            )
+          ],
+        );
+      }
+    );
+  }
+
+  void weakPassword() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Weak password', style: TextStyle(color: Colors.purple),),
+          content: const Text('Password should be at least 6 characters'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            )
+          ],
+        );
+      }
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,20 +147,23 @@ class _SignUpPageState extends State<SignUpPage> {
         
               const SizedBox(height: 30,),
         
-              Container(
-                padding: const EdgeInsets.all(25),
-                margin: const EdgeInsets.symmetric(horizontal: 25.0),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF809fff),
-                  borderRadius: BorderRadius.circular(30)
-                ),
-                child: const Center(
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
+              GestureDetector(
+                onTap: signUserUp,
+                child: Container(
+                  padding: const EdgeInsets.all(25),
+                  margin: const EdgeInsets.symmetric(horizontal: 25.0),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF809fff),
+                    borderRadius: BorderRadius.circular(30)
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                      ),
                     ),
                   ),
                 ),

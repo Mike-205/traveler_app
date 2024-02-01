@@ -1,5 +1,8 @@
 //import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:my_blog/components/home_page.dart';
 import 'package:my_blog/components/text_field.dart';
 import 'package:my_blog/pages/sign_up_page.dart';
 import 'package:my_blog/components/square%20tiles.dart';
@@ -17,13 +20,142 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   // sign user in function
 
-  void signUserIn(){}
+  void signUserIn() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text
+      );
+      Navigator.pop(context);
+      return loginSuccess();
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (kDebugMode) {
+        print(e.code);
+      }
+      if (e.code == 'invalid-email') {
+        return wrongUserEmail();
+      } else if (e.code == 'invalid-credential') {
+        return wrongUserPassword();
+      } else if (e.code == 'too-many-requests') {
+        return userDisabled();
+      }else {
+        return errorMessage();
+      }
+    }
+  }
+  void loginSuccess() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Login Success!', style: TextStyle(color: Colors.green),),
+          content: const Text('successfully logged in'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK', style: TextStyle(color: Color(0xFF809fff))),
+            )
+          ],
+        );
+      }
+    );
+  }
 
+  void wrongUserEmail() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Invalid Email', style: TextStyle(color: Colors.red),),
+            content: const Text('Please enter a valid email'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK', style: TextStyle(color: Color(0xFF809fff)))
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void wrongUserPassword() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Wrong Password', style: TextStyle(color: Colors.red),),
+            content: const Text('Please enter the correct password', ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK', style: TextStyle(color: Color(0xFF809fff))),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void errorMessage() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Login Error', style: TextStyle(color: Colors.red),),
+            content: const Text('No internet connection', ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK', style: TextStyle(color: Color(0xFF809fff))),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void userDisabled() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Oops!', style: TextStyle(color: Colors.red),),
+            content: const Text('Your account has been temporarily disabled due to many failed login attempt. Please try again later', ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK', style: TextStyle(color: Color(0xFF809fff))),
+              )
+            ],
+          );
+        }
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      //resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset : false,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
