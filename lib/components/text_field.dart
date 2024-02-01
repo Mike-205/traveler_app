@@ -1,26 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyTextField extends StatelessWidget {
+class MyTextField extends StatefulWidget {
   final String hint;
   final String label;
   var prefixIcon;
-  var suffixIcon;
-  final bool obscure;
+  final bool isPassword;
+  bool obscured;
+  final controller;
 
   MyTextField({super.key,
     required this.hint,
     required this.label,
     required this.prefixIcon,
-    this.suffixIcon,
-    required this.obscure
+    required this.isPassword,
+    this.obscured = true,
+    required this.controller
   });
+
+  @override
+  State<MyTextField> createState() => _MyTextFieldState();
+}
+
+class _MyTextFieldState extends State<MyTextField> {
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
+        controller: widget.controller,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -33,8 +42,8 @@ class MyTextField extends StatelessWidget {
 
           contentPadding: const EdgeInsets.symmetric(vertical: 15),
 
-          hintText: hint,
-          labelText: label,
+          hintText: widget.hint,
+          labelText: widget.label,
 
           hintStyle: const TextStyle(
               fontSize: 14,
@@ -45,12 +54,23 @@ class MyTextField extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w500
           ),
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
+          prefixIcon: widget.prefixIcon,
+          suffixIcon: widget.isPassword == true? IconButton(
+            onPressed: () {
+              setState(() {
+                widget.obscured = !widget.obscured;
+              });
+            },
+            icon: Icon(
+              widget.obscured == true? Icons.visibility_off : Icons.visibility,
+              size: 25,
+              color: const Color(0xFF809fff),
+            ),
+          ) : null,
           fillColor: Colors.grey.shade100,
           filled: true,
         ),
-        obscureText: obscure,
+        obscureText: widget.obscured,
       ),
     );
   }
