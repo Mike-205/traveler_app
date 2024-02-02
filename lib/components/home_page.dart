@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_blog/widgets/app_large_text.dart';
 import 'package:my_blog/widgets/app_text.dart';
+import 'package:my_blog/widgets/profile_page.dart';
 
 import '../misc/colors.dart';
 import '../widgets/detail_page.dart';
@@ -72,16 +73,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ),
                 Expanded(child: Container()),
-                Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    //color: Colors.grey.withOpacity(.5),
-                    image: const DecorationImage(
-                      image: AssetImage("assets/profile.jpg"),
-                      fit: BoxFit.scaleDown
+
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context){
+                        return const ProfilePage();
+                      }
+                    ));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 20),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(90),
+                      //color: Colors.grey.withOpacity(.5),
+                      image: const DecorationImage(
+                        image: AssetImage("assets/27df110f-b9d9-4f00-83b1-f9cf4e3b8d19.jpg"),
+                        fit: BoxFit.cover
+                      ),
                     ),
                   ),
                 ),

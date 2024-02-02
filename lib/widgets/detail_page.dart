@@ -15,8 +15,8 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  int gotten_stars =3;
-
+  //int gotten_stars =3;
+  List stars = [5, 4, 3, 5, 3, 3, 4, 3, 3, 4];
   int selected_index = -1;
 
   bool icon_clicked = false;
@@ -114,7 +114,7 @@ class _DetailPageState extends State<DetailPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppLargeText(text: details.keys.elementAt(widget.imgIndex), color: Colors.black.withOpacity(.8), size: 32,),  //text is required
-                          AppLargeText(text: "\$ "+ images.values.elementAt(widget.imgIndex), color: Colors.purple.shade200, size: 32,), //Amount required
+                          AppLargeText(text: "\$ "+ images.values.elementAt(widget.imgIndex), color: const Color(0xFF809fff), size: 32,), //Amount required
 
                         ],
                       ),
@@ -132,11 +132,11 @@ class _DetailPageState extends State<DetailPage> {
                           Wrap(
                               children:
                               List.generate(5, (index){
-                                return Icon(Icons.star, color: index < gotten_stars? AppColors.starColor : AppColors.textColor2, size: 30); //random number generation
+                                return Icon(Icons.star, color: index < stars[widget.imgIndex]? AppColors.starColor : AppColors.textColor2, size: 30); //random number generation
                               })
                           ),
                           const SizedBox(width: 5,),
-                          AppText(text: "(3.0)", color: AppColors.textColor2, size: 20,),  //convert a float to string
+                          AppText(text: "(${stars[widget.imgIndex]}.0)", color: AppColors.textColor2, size: 20,),  //convert a float to string
                         ],
                       ),
                       const SizedBox(height: 20,),
