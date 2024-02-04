@@ -38,6 +38,10 @@ dependencies:
   get:
   firebase_core: ^2.25.1
   firebase_auth: ^4.17.0
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^5.0.0
+  flutter_facebook_auth: ^6.0.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

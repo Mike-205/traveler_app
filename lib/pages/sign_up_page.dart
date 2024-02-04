@@ -20,7 +20,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final passwordController =TextEditingController();
 
   // sign user up function
-  Future<void> signUserUp() async {
+  void signUserUp() async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -194,18 +194,18 @@ class _SignUpPageState extends State<SignUpPage> {
         
               const SizedBox(height: 20,),
         
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SquareTiles(imagePath: 'assets/google.png'),
+                  SquareTiles(imagePath: 'assets/google.png', onTap:(){}),
         
-                  SizedBox(width: 15,),
+                  const SizedBox(width: 15,),
         
-                  SquareTiles(imagePath: 'assets/apple.png'),
+                  SquareTiles(imagePath: 'assets/apple.png', onTap:(){},),
         
-                  SizedBox(width: 15,),
+                  const SizedBox(width: 15,),
         
-                  SquareTiles(imagePath: 'assets/facebook.png')
+                  SquareTiles(imagePath: 'assets/facebook.png', onTap:(){},),
                 ],
               ),
         

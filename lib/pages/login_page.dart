@@ -6,6 +6,7 @@ import 'package:my_blog/components/home_page.dart';
 import 'package:my_blog/components/text_field.dart';
 import 'package:my_blog/pages/sign_up_page.dart';
 import 'package:my_blog/components/square%20tiles.dart';
+import 'package:my_blog/services/auth_service.dart';
 import 'package:my_blog/widgets/account_pages_title.dart';
 
 class LoginPage extends StatefulWidget {
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
       if (e.code == 'invalid-email') {
         return wrongUserEmail();
       } else if (e.code == 'invalid-credential') {
-        return wrongUserPassword();
+        return wrongUserCredential();
       } else if (e.code == 'too-many-requests') {
         return userDisabled();
       }else {
@@ -92,13 +93,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void wrongUserPassword() {
+  void wrongUserCredential() {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Wrong Password', style: TextStyle(color: Colors.red),),
-            content: const Text('Please enter the correct password', ),
+            title: const Text('Login failed', style: TextStyle(color: Colors.red),),
+            content: const Text('The username or password you have entered is incorrect', ),
             actions: [
               TextButton(
                   onPressed: () {
@@ -265,18 +266,18 @@ class _LoginPageState extends State<LoginPage> {
         
               const SizedBox(height: 30,),
               
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SquareTiles(imagePath: 'assets/google.png'),
+                  SquareTiles(imagePath: 'assets/google.png', onTap: () async { await AuthService().signInWithGoogle();}),
         
-                  SizedBox(width: 15,),
+                  const SizedBox(width: 15,),
         
-                  SquareTiles(imagePath: 'assets/apple.png'),
+                  SquareTiles(imagePath: 'assets/apple.png', onTap:(){}),
         
-                  SizedBox(width: 15,),
+                  const SizedBox(width: 15,),
         
-                  SquareTiles(imagePath: 'assets/facebook.png')
+                  SquareTiles(imagePath: 'assets/facebook.png', onTap:() async { await AuthService().signInWithFacebook();}),
                 ],
               ),
         
@@ -318,7 +319,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-        
             ],
           ),
         ),

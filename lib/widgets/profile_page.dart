@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 30,
                             fontWeight: FontWeight.bold
                           ),
-                                                ),
+                        ),
                         ),
 
                       Container(
