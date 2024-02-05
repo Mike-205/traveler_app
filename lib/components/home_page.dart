@@ -209,7 +209,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     },
                   ),
                   const Text('There'),
-                  const Text('Bye')
+                  const Text('By')
                   ]
               ),
             ),
