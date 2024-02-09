@@ -63,8 +63,23 @@ class AuthService {
 
   //sign in with facebook
   signInWithFacebook() async {
-    final LoginResult result = await FacebookAuth.instance.login();
-    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken!.token);
-    return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(result.accessToken!.token);
+      return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print(e.code);
+      }
+      if (e.code == 'account-exists-with-different-credential') {
+        //handle the error here
+      } else if (e.code == 'invalid-credential') {
+        //handle the error here
+      } else {
+        if (kDebugMode) {
+          print(e.code);
+        }
+      }
+    }
   }
 }
