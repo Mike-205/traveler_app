@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatefulWidget {
@@ -40,7 +39,7 @@ class _MyTextFieldState extends State<MyTextField> {
               borderSide: const BorderSide(color: Colors.blue)
           ),
 
-          contentPadding: const EdgeInsets.symmetric(vertical: 15),
+          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
 
           hintText: widget.hint,
           labelText: widget.label,
